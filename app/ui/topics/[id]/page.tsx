@@ -2,6 +2,7 @@ import { AskQuestion } from "@/components/AskQuestion";
 import { Question } from "@/components/Question";
 import { fetchQuestions, fetchTopic } from "@/lib/data";
 import { HashtagIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 export default async function Page({
   params,
@@ -22,14 +23,18 @@ export default async function Page({
         <HashtagIcon className="h-6 w-6 mr-2" /> {topic.title}
       </h1>
       <AskQuestion topic={topic.id} />
-      {questions.map((question) => (
-        <Question
-          key={question.id}
-          id={question.id}
-          text={question.title}
-          votes={question.votes}
-        />
-      ))}
+      <div>
+        {questions.map((question) => (
+          <Link key={question.id} href={`/questions/${question.id}`}>
+            <Question
+              key={question.id}
+              id={question.id}
+              text={question.title}
+              votes={question.votes}
+            />
+          </Link>
+        ))}
+      </div> 
     </div>
   );
 }
