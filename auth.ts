@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { fetchUser } from "./lib/data";
 import bcrypt from "bcryptjs";
+import Github from "next-auth/providers/github";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   theme: {
@@ -11,6 +12,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   providers: [
     Credentials({
+      id: "credentials",
       credentials: {
         email: {
           label: "Email",
@@ -30,6 +32,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return null;
       },
     }),
+
+    Github({
+      id: "github",
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+    })
   ],
   callbacks: {
     authorized: async ({ auth }) => {
