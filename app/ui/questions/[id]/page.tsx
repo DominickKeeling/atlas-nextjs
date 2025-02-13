@@ -15,15 +15,15 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold">
+    <div className="mx-auto p-4">
+      <h1 className="flex items-center text-3xl font-bold">
         <HashtagIcon className="h-6 w-6 mr-3" />
         {question.title}
       </h1>
       <div>
         <AnswerForm question={question.id} />
       </div>
-      <div>
+      <div className="border border-gray-300">
         <AnswersList answers={answers} question={question.id} />
       </div>
     </div>

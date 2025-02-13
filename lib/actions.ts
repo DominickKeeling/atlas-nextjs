@@ -49,6 +49,8 @@ export async function addAnswer(data: FormData) {
   const question = data.get("question_id") as string;
   const answer = data.get("answer") as string;
 
+  console.log("🔍 Received form data:", { question, answer });
+
   if (!question || !answer) {
     throw new Error("Missing required fields.");
   }
@@ -64,7 +66,7 @@ export async function addAnswer(data: FormData) {
 
 export async function setAnswer(data: FormData) {
   const question = data.get("question_id") as string;
-  const answer = data.get("answer") as string;
+  const answer = data.get("answer_id") as string;
 
   if (!question || !answer) {
     throw new Error("Missing required fields.");
@@ -73,7 +75,7 @@ export async function setAnswer(data: FormData) {
     await updateAsAnswer(question, answer);
     revalidatePath(`/ui/questions/${question}`);
   } catch (error) {
-    console.error("Error accepting ansqwer:", error);
+    console.error("Error accepting answer:", error);
     throw new Error("Failed to accept answer.");
   }
 }

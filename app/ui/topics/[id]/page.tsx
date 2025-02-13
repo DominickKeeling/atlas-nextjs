@@ -25,7 +25,7 @@ export default async function Page({
       <AskQuestion topic={topic.id} />
       <div>
         {questions.map((question) => (
-          <Link key={question.id} href={`/questions/${question.id}`}>
+          <Link key={question.id} href={`/ui/questions/${question.id}`}>
             <Question
               key={question.id}
               id={question.id}

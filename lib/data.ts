@@ -33,8 +33,10 @@ export async function fetchTopic(id: string) {
 
 export async function fetchQuestion(id: string) {
   try {
-    const data = await sql<Question>`SELECT * FROM questions WHERE id = ${id} LIMIT 1`;
-    return data.rows && data.rows.length > 0 ? data.rows[0] : null;
+    const data = await sql<Question>`SELECT * FROM questions WHERE id = ${id}`;
+    const question = data.rows[0];
+
+    return question ?? null;
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch question.");
@@ -49,6 +51,17 @@ export async function fetchQuestions(id: string) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch questions.");
+  }
+}
+
+export async function fetchAnswers(id: string) {
+  try {
+    const data = await sql<Answer>`
+    SELECT * FROM answers WHERE question_id = ${id} ORDER BY is_accepted DESC, id ASC`;
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch answers.");
   }
 }
 
@@ -88,20 +101,10 @@ export async function incrementVotes(id: string) {
   }
 }
 
-export async function fetchAnswers(id: string) {
-  try {
-    const data =
-    await sql<Answer>`SELECT * FROM answers WHERE question_id = ${id} ORDER BY is_accepted DESC, id ASC`;
-    return data.rows;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch answers.");
-  }
-}
-
 export async function insertAnswer(question: string, answer: string) {
   try {
-    const data = await sql`INSERT INTO answers (question, answer) VALUES (${question}, ${answer}) RETURNING *`;
+    const data = await sql`
+    INSERT INTO answers (question_id, answer) VALUES (${question}, ${answer}) RETURNING *`;
     return data.rows[0];
   } catch (error) {
     console.error("Database Error:", error);
