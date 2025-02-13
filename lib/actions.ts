@@ -1,4 +1,3 @@
-// Define your server actions here
 "use server";
 
 import { revalidatePath } from "next/cache";
@@ -17,7 +16,9 @@ export async function addTopic(data: FormData) {
     throw new Error("Failed to add topic.");
   } finally {
     revalidatePath("/ui/topics/[id]", "page");
-    topic && redirect(`/ui/topics/${topic.id}`);
+    if (topic) {
+      redirect(`/ui/topics/${topic.id}`);
+    }
   }
 }
 

@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import { useSession, SessionProvider } from "next-auth/react";
-import Link from "next/link";
 import placeholder from "@/assets/placeholder.svg";
 
 export default function LoggedInUser() {
