@@ -10,7 +10,7 @@ export default function LoggedInUser() {
       <UserDetails />
     </SessionProvider>
   );
-}
+}//
 
 function UserDetails() {
   const { data: session } = useSession();
