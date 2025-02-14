@@ -1,9 +1,18 @@
+"use client";
 import { HandThumbUpIcon } from "@heroicons/react/24/outline";
-import { addVote } from "@/lib/actions";
 
-export default function VoteButton({ id }: { id: string }) {
+export default function VoteButton({ id, action }: { id: string; action: (data: FormData) => void }) {
+  console.log("VoteButton rendered with ID:", id);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    console.log("Client: Submitting form with ID:", formData.get("id"));
+    await action(formData);
+  }
+
   return (
-    <form action={addVote}>
+    <form onSubmit={handleSubmit}>
       <input type="hidden" name="id" value={id} />
       <button
         type="submit"

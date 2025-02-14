@@ -37,9 +37,21 @@ export async function addQuestion(question: FormData) {
 }
 
 export async function addVote(data: FormData) {
+  const voteId = data.get("id") as string;
+  console.log("Received vote ID from FormData:", voteId);
+
+  if (!voteId) {
+    console.error("SERVER: Missing vote ID");
+    return;
+  }
+
   try {
-    incrementVotes(data.get("id") as string);
+    console.log("Calling incrementVotes with ID:", voteId);
+    await incrementVotes(voteId);
+    console.log("incrementVotes completed for ID:", voteId);
+
     revalidatePath("/ui/topics/[id]", "page");
+    console.log("Path revalidated for /ui/topics/[id]");
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to add vote.");
