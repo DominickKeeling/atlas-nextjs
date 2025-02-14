@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { fetchQuestions } from "@/lib/data";
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { id?: string } }
-): Promise<NextResponse> {
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const topicId = params.id;
+    const topicId = (await params).id;
 
     if (!topicId) {
       return NextResponse.json(
